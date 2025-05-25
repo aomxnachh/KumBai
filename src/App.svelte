@@ -16,7 +16,7 @@
   const hints: Hint[] = [
     { text: "มัธยมศิลป์แห่งคณิตศาสตร์บัณฑิต นักปราชญ์สรรค์สร้างขั้นตอนวิธี สมองกลจักรกลประมวลผลเทิดทูน ชาติกาลเวลาแปรเปลี่ยนไปตามกัน ยุคแห่งข้อมูลใหญ่ไหลเวียนวน อัลกอริทึมแทรกซ้อนซับซ้อนงาม องค์ความรู้ปัญญาประดิษฐ์คิดคำนวณ มิได้หยุดหย่อนแห่งความก้าวหน้าคำ", color: "text-red-400" },
     { text: "พี่ทำงานกับคนนี้นะ https://www.facebook.com/momotheoxy",color: "text-yellow-400", image: "https://shorturl.asia/NQJeT"},
-    { text: "พี่เป็น PM(Project manager), Full stack Developer", color: "text-blue-400", image: "https://shorturl.at/H3BpY" },
+    { text: "พี่เป็น PM(Project manager)มั้ง, Full stack Developer(Claude, ChatGPT :) )", color: "text-blue-400", image: "https://shorturl.at/H3BpY" },
     { text: "ออกซิเจน,อะเมริเซียม", color: "text-green-400" },
     { text: "https://youtu.be/FnvUMFmxP70?si=VNzl1Xl2QdSO0Pl8", color: "text-purple-400" },
   ];
