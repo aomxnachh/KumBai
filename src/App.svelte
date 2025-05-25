@@ -245,7 +245,7 @@
             disabled={isAnimating}
           >
             <span class="relative z-10">
-              {isAnimating ? 'PROCESSING...' : 'CLICK ME! 🚫'}
+              {isAnimating ? 'PROCESSING...' : 'CLICK ME!'}
             </span>
             <div class="absolute inset-0 bg-red-500/20 rounded-lg blur-lg group-hover:blur-xl transition-all"></div>
           </button>
