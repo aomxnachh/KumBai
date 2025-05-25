@@ -258,7 +258,7 @@
                  border-2 border-orange-400 rounded-lg shadow-lg hover:shadow-orange-500/50
                  transform transition-all duration-300 hover:scale-105"
         >
-          <span class="relative z-10">Pop Cat 🐱 (secret in here) ({popCatCount})</span>
+          <span class="relative z-10">Pop Cat 🐱 (เผื่อน้องเบื่อ) ({popCatCount})</span>
           <div class="absolute inset-0 bg-orange-500/20 rounded-lg blur-lg group-hover:blur-xl transition-all"></div>
         </button>
         
