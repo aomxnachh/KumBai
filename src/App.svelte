@@ -109,6 +109,45 @@
       setTimeout(() => {
         showPopCatModal = true;
       }, 100);
+    }
+      else if (popCatCount === 600) {
+      popCatModalContent = {
+        title: "เชื่อพี่เถอะว่ามันหมดแล้ว",
+        message: ""
+      };
+      setTimeout(() => {
+        showPopCatModal = true;
+      }, 100);
+    }
+      else if (popCatCount === 700) {
+      popCatModalContent = {
+        title: "หมดแล้วจริงงงๆๆๆๆๆๆ",
+        message: ""
+      };
+      setTimeout(() => {
+        showPopCatModal = true;
+      }, 100);
+      }
+      else if (popCatCount === 800) {
+      popCatModalContent = {
+        title: "พี่บอกแล้วว่ามันหมดแล้วววว",
+        message: ""
+      };
+      setTimeout(() => {
+        showPopCatModal = true;
+      }, 100);
+
+      }
+      else if (popCatCount === 900) {
+      popCatModalContent = {
+        title: "เลิกกดก่อนนนนนนนนนนน",
+        message: ""
+      };
+      setTimeout(() => {
+        showPopCatModal = true;
+      }, 100);
+
+    
     } else if (popCatCount === 1000) {
       popCatModalContent = {
         title: "โอเคถ้าน้องกดขนาดนี้",
