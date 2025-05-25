@@ -15,6 +15,7 @@
   let showEndModal: boolean = false;
   let showNoModal: boolean = false;
   let showPopCatModal: boolean = false;
+  let popCatModalContent: { title: string; message: string } = { title: "", message: "" };
   
   const hints: Hint[] = [
     { text: "มัธยมศิลป์แห่งคณิตศาสตร์บัณฑิต นักปราชญ์สรรค์สร้างขั้นตอนวิธี สมองกลจักรกลประมวลผลเทิดทูน ชาติกาลเวลาแปรเปลี่ยนไปตามกัน ยุคแห่งข้อมูลใหญ่ไหลเวียนวน อัลกอริทึมแทรกซ้อนซับซ้อนงาม องค์ความรู้ปัญญาประดิษฐ์คิดคำนวณ มิได้หยุดหย่อนแห่งความก้าวหน้าคำ", color: "text-red-400" },
@@ -33,6 +34,12 @@
   ];
   
   onMount(() => {
+    // Load saved popCatCount from localStorage
+    const savedPopCatCount = localStorage.getItem('popCatCount');
+    if (savedPopCatCount) {
+      popCatCount = parseInt(savedPopCatCount, 10) || 0;
+    }
+    
     terminalStartup.forEach((line, index) => {
       setTimeout(() => {
         terminalLines = [...terminalLines, `> ${line}`];
@@ -78,10 +85,57 @@
     }, 600);
   }
   
+  function handlePopCatClick(): void {
+    popCatCount++;
+    
+    // Save to localStorage
+    localStorage.setItem('popCatCount', popCatCount.toString());
+    
+    terminalLines = [...terminalLines, `> POP_CAT_${popCatCount} clicked at ${new Date().toLocaleTimeString()} 🐱`];
+    
+    if (popCatCount === 400) {
+      popCatModalContent = {
+        title: "นามปากกา",
+        message: "พี่ชื่อ เกาเหลา"
+      };
+      setTimeout(() => {
+        showPopCatModal = true;
+      }, 100);
+    } else if (popCatCount === 500) {
+      popCatModalContent = {
+        title: "หมดแล้วน้องเลิกกดได้แล้ว",
+        message: ""
+      };
+      setTimeout(() => {
+        showPopCatModal = true;
+      }, 100);
+    } else if (popCatCount === 1000) {
+      popCatModalContent = {
+        title: "โอเคถ้าน้องกดขนาดนี้",
+        message: "พี่ชื่อ ออม นะงับ"
+      };
+      setTimeout(() => {
+        showPopCatModal = true;
+      }, 100);
+    }
+    
+    
+    setTimeout(() => {
+      const terminal = document.querySelector('.terminal-output');
+      if (terminal) {
+        terminal.scrollTop = terminal.scrollHeight;
+      }
+    }, 100);
+  }
+  
   function resetGame(): void {
     currentHint = null;
     clickCount = 0;
     popCatCount = 0;
+    
+    // Clear popCatCount from localStorage when resetting
+    localStorage.removeItem('popCatCount');
+    
     terminalLines = [...terminalStartup.map(line => `> ${line}`)];
     isAnimating = false;
     showEndModal = false;
@@ -97,24 +151,6 @@
   
   function closeNoModal(): void {
     showNoModal = false;
-  }
-  
-  function handlePopCatClick(): void {
-    popCatCount++;
-    terminalLines = [...terminalLines, `> POP_CAT_${popCatCount} clicked at ${new Date().toLocaleTimeString()} 🐱`];
-    
-    if (popCatCount === 400) {
-      setTimeout(() => {
-        showPopCatModal = true;
-      }, 500);
-    }
-    
-    setTimeout(() => {
-      const terminal = document.querySelector('.terminal-output');
-      if (terminal) {
-        terminal.scrollTop = terminal.scrollHeight;
-      }
-    }, 100);
   }
   
   function closePopCatModal(): void {
@@ -309,11 +345,13 @@
                   shadow-2xl shadow-orange-500/50 animate-fade-in">
         <div class="text-6xl mb-4">🐱</div>
         <h2 class="text-2xl font-bold text-orange-400 mb-4">
-          นามปากกา
+          {popCatModalContent.title}
         </h2>
-        <p class="text-yellow-400 text-lg mb-6">
-          พี่ชื่อ เกาเหลา
-        </p>
+        {#if popCatModalContent.message}
+          <p class="text-yellow-400 text-lg mb-6">
+            {popCatModalContent.message}
+          </p>
+        {/if}
         <button
           on:click={closePopCatModal}
           class="px-6 py-3 bg-orange-600 hover:bg-orange-500 text-white font-bold rounded-lg
