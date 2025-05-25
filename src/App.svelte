@@ -228,7 +228,7 @@
           Click for hint... 😏
         </p>
         <div class="text-sm text-green-400/60 space-y-1">
-          <div>Hint Clicks: <span class="text-yellow-400 font-bold">{clickCount}</span></div>
+          <div>Hint: <span class="text-yellow-400 font-bold">{clickCount}</span></div>
           <div>Pop Cat Clicks: <span class="text-orange-400 font-bold">{popCatCount}</span></div>
         </div>
       </div>
