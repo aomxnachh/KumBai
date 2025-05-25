@@ -14,6 +14,7 @@
   let terminalLines: string[] = [];
   let showEndModal: boolean = false;
   let showNoModal: boolean = false;
+  let showPopCatModal: boolean = false;
   
   const hints: Hint[] = [
     { text: "มัธยมศิลป์แห่งคณิตศาสตร์บัณฑิต นักปราชญ์สรรค์สร้างขั้นตอนวิธี สมองกลจักรกลประมวลผลเทิดทูน ชาติกาลเวลาแปรเปลี่ยนไปตามกัน ยุคแห่งข้อมูลใหญ่ไหลเวียนวน อัลกอริทึมแทรกซ้อนซับซ้อนงาม องค์ความรู้ปัญญาประดิษฐ์คิดคำนวณ มิได้หยุดหย่อนแห่งความก้าวหน้าคำ", color: "text-red-400" },
@@ -102,12 +103,22 @@
     popCatCount++;
     terminalLines = [...terminalLines, `> POP_CAT_${popCatCount} clicked at ${new Date().toLocaleTimeString()} 🐱`];
     
+    if (popCatCount === 400) {
+      setTimeout(() => {
+        showPopCatModal = true;
+      }, 500);
+    }
+    
     setTimeout(() => {
       const terminal = document.querySelector('.terminal-output');
       if (terminal) {
         terminal.scrollTop = terminal.scrollHeight;
       }
     }, 100);
+  }
+  
+  function closePopCatModal(): void {
+    showPopCatModal = false;
   }
   
   function parseTextWithLinks(text: string): string {
@@ -172,7 +183,7 @@
                  border-2 border-orange-400 rounded-lg shadow-lg hover:shadow-orange-500/50
                  transform transition-all duration-300 hover:scale-105"
         >
-          <span class="relative z-10">Pop Cat 🐱 ({popCatCount})</span>
+          <span class="relative z-10">Pop Cat 🐱 (secret in here) ({popCatCount})</span>
           <div class="absolute inset-0 bg-orange-500/20 rounded-lg blur-lg group-hover:blur-xl transition-all"></div>
         </button>
         
@@ -285,6 +296,29 @@
           class="px-6 py-3 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-lg
                  border-2 border-blue-400 transition-all duration-300
                  hover:shadow-blue-400/50 hover:shadow-lg transform hover:scale-105"
+        >
+          OK
+        </button>
+      </div>
+    </div>
+  {/if}
+  
+  {#if showPopCatModal}
+    <div class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+      <div class="bg-gray-900 border-2 border-orange-400 rounded-lg p-8 max-w-md mx-auto text-center
+                  shadow-2xl shadow-orange-500/50 animate-fade-in">
+        <div class="text-6xl mb-4">🐱</div>
+        <h2 class="text-2xl font-bold text-orange-400 mb-4">
+          นามปากกา
+        </h2>
+        <p class="text-yellow-400 text-lg mb-6">
+          พี่ชื่อ เกาเหลา
+        </p>
+        <button
+          on:click={closePopCatModal}
+          class="px-6 py-3 bg-orange-600 hover:bg-orange-500 text-white font-bold rounded-lg
+                 border-2 border-orange-400 transition-all duration-300
+                 hover:shadow-orange-400/50 hover:shadow-lg transform hover:scale-105"
         >
           OK
         </button>
