@@ -100,7 +100,7 @@
       };
       setTimeout(() => {
         showPopCatModal = true;
-      }, 100);
+      }, 0);
     } else if (popCatCount === 500) {
       popCatModalContent = {
         title: "หมดแล้วน้องเลิกกดได้แล้ว",
@@ -108,7 +108,7 @@
       };
       setTimeout(() => {
         showPopCatModal = true;
-      }, 100);
+      }, 0);
     }
       else if (popCatCount === 600) {
       popCatModalContent = {
@@ -117,7 +117,7 @@
       };
       setTimeout(() => {
         showPopCatModal = true;
-      }, 100);
+      }, 0);
     }
       else if (popCatCount === 700) {
       popCatModalContent = {
@@ -126,7 +126,7 @@
       };
       setTimeout(() => {
         showPopCatModal = true;
-      }, 100);
+      }, 0);
       }
       else if (popCatCount === 800) {
       popCatModalContent = {
@@ -135,7 +135,7 @@
       };
       setTimeout(() => {
         showPopCatModal = true;
-      }, 100);
+      }, 0);
 
       }
       else if (popCatCount === 900) {
@@ -145,7 +145,7 @@
       };
       setTimeout(() => {
         showPopCatModal = true;
-      }, 100);
+      }, 0);
 
     
     } else if (popCatCount === 1000) {
