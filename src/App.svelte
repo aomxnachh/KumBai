@@ -11,18 +11,14 @@
   let clickCount: number = 0;
   let isAnimating: boolean = false;
   let terminalLines: string[] = [];
+  let showEndModal: boolean = false;
   
   const hints: Hint[] = [
     { text: "มัธยมศิลป์แห่งคณิตศาสตร์บัณฑิต นักปราชญ์สรรค์สร้างขั้นตอนวิธี สมองกลจักรกลประมวลผลเทิดทูน ชาติกาลเวลาแปรเปลี่ยนไปตามกัน ยุคแห่งข้อมูลใหญ่ไหลเวียนวน อัลกอริทึมแทรกซ้อนซับซ้อนงาม องค์ความรู้ปัญญาประดิษฐ์คิดคำนวณ มิได้หยุดหย่อนแห่งความก้าวหน้าคำ", color: "text-red-400" },
-    { text: "Still clicking? Really? 🙄 / ยังจะกดอีกเหรอ?", color: "text-yellow-400" },
-    { text: "You're persistent... 😏 / ดื้อจริงๆ นะ...", color: "text-blue-400", image: "https://shorturl.asia/2nmMZ" },
-    { text: "Fine, here's a hint: It starts with 'H' / โอเค ใบ้ให้: ขึ้นต้นด้วย 'H'", color: "text-green-400" },
-    { text: "HINT: Think greeting! / ใบ้: คิดถึงการทักทาย!", color: "text-purple-400" },
-    { text: "🤦‍♂️ Hello? Really? / สวัสดี? จริงเหรอ?", color: "text-pink-400" },
-    { text: "You got it! But why did you keep clicking? 😂 / ได้แล้ว! แต่ทำไมกดต่อ?", color: "text-cyan-400" },
-    { text: "Okay, I'm impressed by your dedication 👏 / โอเค ชื่นชมความมุ่งมั่น", color: "text-orange-400" },
-    { text: "🎉 BONUS: You're awesome! / โบนัส: คุณเจ๋งมาก!", color: "text-indigo-400" },
-    { text: "Last hint: Stop clicking! 😆 / ใบ้สุดท้าย: หยุดกด!", color: "text-rose-400" }
+    { text: "พี่ทำงานกับคนนี้นะ https://www.facebook.com/momotheoxy",color: "text-yellow-400", image: "https://shorturl.asia/NQJeT"},
+    { text: "พี่เป็น PM(Project manager), Full stack Developer", color: "text-blue-400", image: "https://shorturl.at/H3BpY" },
+    { text: "ออกซิเจน,อะเมริเซียม", color: "text-green-400" },
+    { text: "https://youtu.be/FnvUMFmxP70?si=VNzl1Xl2QdSO0Pl8", color: "text-purple-400" },
   ];
   
   const terminalStartup = [
@@ -53,11 +49,19 @@
     currentHint = hints[hintIndex];
     
     setTimeout(() => {
+      // Show full hint text in terminal (including URLs that are not images)
       terminalLines = [...terminalLines, `> HINT_${clickCount}: ${currentHint?.text}`];
       if (currentHint?.image) {
-        terminalLines = [...terminalLines, `> IMAGE_LOADED`];
+        terminalLines = [...terminalLines, `> IMAGE_LOADED:${currentHint.image}`];
       }
     }, 500);
+    
+    // Check if all hints are exhausted
+    if (clickCount >= hints.length) {
+      setTimeout(() => {
+        showEndModal = true;
+      }, 2000);
+    }
     
     setTimeout(() => {
       isAnimating = false;
@@ -76,6 +80,16 @@
     clickCount = 0;
     terminalLines = [...terminalStartup.map(line => `> ${line}`)];
     isAnimating = false;
+    showEndModal = false;
+  }
+  
+  function closeModal(): void {
+    showEndModal = false;
+  }
+  
+  function parseTextWithLinks(text: string): string {
+    const urlRegex = /(https?:\/\/[^\s]+)/g;
+    return text.replace(urlRegex, '<a href="$1" target="_blank" rel="noopener noreferrer" class="text-cyan-400 hover:text-cyan-300 underline break-all">$1</a>');
   }
 </script>
 
@@ -94,7 +108,7 @@
   </div>
   
   <!-- Main content -->
-  <div class="relative z-10 container mx-auto px-4 py-8 grid grid-cols-1 lg:grid-cols-2 gap-8 min-h-[calc(100vh-80px)]">
+  <div class="relative z-10 container mx-auto px-4 py-8 grid grid-cols-1 lg:grid-cols-2 gap-8 h-[calc(100vh-80px)]">
     
     <div class="flex flex-col items-center justify-center space-y-8">
       <div class="text-center space-y-4">
@@ -109,20 +123,22 @@
         </div>
       </div>
       
-      <button
-        on:click={handleClick}
-        class="group relative px-8 py-4 bg-gradient-to-r from-red-600 to-red-800 
-               hover:from-red-500 hover:to-red-700 text-white font-bold text-xl
-               border-2 border-red-400 rounded-lg shadow-lg hover:shadow-red-500/50
-               transform transition-all duration-300 hover:scale-105
-               {isAnimating ? 'animate-pulse scale-110' : ''}"
-        disabled={isAnimating}
-      >
-        <span class="relative z-10">
-          {isAnimating ? 'PROCESSING...' : 'CLICK ME! 🚫'}
-        </span>
-        <div class="absolute inset-0 bg-red-500/20 rounded-lg blur-lg group-hover:blur-xl transition-all"></div>
-      </button>
+      {#if clickCount < hints.length}
+        <button
+          on:click={handleClick}
+          class="group relative px-8 py-4 bg-gradient-to-r from-red-600 to-red-800 
+                 hover:from-red-500 hover:to-red-700 text-white font-bold text-xl
+                 border-2 border-red-400 rounded-lg shadow-lg hover:shadow-red-500/50
+                 transform transition-all duration-300 hover:scale-105
+                 {isAnimating ? 'animate-pulse scale-110' : ''}"
+          disabled={isAnimating}
+        >
+          <span class="relative z-10">
+            {isAnimating ? 'PROCESSING...' : 'CLICK ME! 🚫'}
+          </span>
+          <div class="absolute inset-0 bg-red-500/20 rounded-lg blur-lg group-hover:blur-xl transition-all"></div>
+        </button>
+      {/if}
       
       {#if currentHint}
         <div class="bg-gray-900/80 border border-green-400/50 rounded-lg p-6 max-w-md mx-auto
@@ -131,15 +147,15 @@
             <span class="text-yellow-400">⚠️</span>
             <span class="text-green-300 font-semibold">HINT DETECTED</span>
           </div>
-          <p class="{currentHint.color} text-lg font-medium mb-4">
+          <div class="{currentHint.color} text-lg font-medium mb-4">
             {#if clickCount === 1}
               {#each currentHint.text.split(' ') as word, index}
                 {word}{#if index < currentHint.text.split(' ').length - 1}<br/>{/if}
               {/each}
             {:else}
-              {currentHint.text}
+              {@html parseTextWithLinks(currentHint.text)}
             {/if}
-          </p>
+          </div>
           {#if currentHint.image}
             <div class="mt-4 text-center">
               <img 
@@ -179,17 +195,22 @@
       <div class="terminal-output h-96 overflow-y-auto scrollbar-thin scrollbar-thumb-green-400/50 scrollbar-track-gray-800">
         {#each terminalLines as line, index}
           <div class="text-green-300 text-sm mb-1 typewriter">
-            {line}
-            {#if line.includes('IMAGE_LOADED') && currentHint?.image}
+            {#if line.includes('IMAGE_LOADED:')}
+              {@const imageUrl = line.split('IMAGE_LOADED:')[1]}
+              <div class="text-green-300">{'> IMAGE_LOADED:'}</div>
               <div class="mt-2 mb-2">
                 <img 
-                  src={currentHint.image} 
+                  src={imageUrl} 
                   alt="Terminal hint illustration" 
                   class="max-w-32 h-auto rounded border border-green-400/30 shadow-md
                          hover:border-green-400/60 transition-all duration-300"
                   loading="lazy"
                 />
               </div>
+            {:else if line.includes('https://') && !line.includes('IMAGE_LOADED:')}
+              {@html parseTextWithLinks(line)}
+            {:else}
+              {line}
             {/if}
           </div>
         {/each}
@@ -200,6 +221,30 @@
       </div>
     </div>
   </div>
+  
+  <!-- End Modal -->
+  {#if showEndModal}
+    <div class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+      <div class="bg-gray-900 border-2 border-red-400 rounded-lg p-8 max-w-md mx-auto text-center
+                  shadow-2xl shadow-red-500/50 animate-fade-in">
+        <div class="text-6xl mb-4"><img src="https://shorturl.asia/2Sy1r" alt=""></div>
+        <h2 class="text-2xl font-bold text-red-400 mb-4">
+          คำใบ้หมดแล้วนะงับ
+        </h2>
+        <p class="text-yellow-400 text-lg mb-6">
+          ขอให้ทายถูกน้าาาาาาา
+        </p>
+        <button
+          on:click={closeModal}
+          class="px-6 py-3 bg-green-600 hover:bg-green-500 text-white font-bold rounded-lg
+                 border-2 border-green-400 transition-all duration-300
+                 hover:shadow-green-400/50 hover:shadow-lg transform hover:scale-105"
+        >
+          OK
+        </button>
+      </div>
+    </div>
+  {/if}
 </main>
 
 <style>
