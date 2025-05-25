@@ -148,7 +148,7 @@
       }, 0);
 
     
-    } else if (popCatCount === 1000) {
+    } else if (popCatCount === 500000) {
       popCatModalContent = {
         title: "โอเคถ้าน้องกดขนาดนี้",
         message: "พี่ชื่อ ออม นะงับ"
