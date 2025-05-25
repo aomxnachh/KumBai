@@ -9,16 +9,18 @@
   
   let currentHint: Hint | null = null;
   let clickCount: number = 0;
+  let popCatCount: number = 0;
   let isAnimating: boolean = false;
   let terminalLines: string[] = [];
   let showEndModal: boolean = false;
+  let showNoModal: boolean = false;
   
   const hints: Hint[] = [
     { text: "มัธยมศิลป์แห่งคณิตศาสตร์บัณฑิต นักปราชญ์สรรค์สร้างขั้นตอนวิธี สมองกลจักรกลประมวลผลเทิดทูน ชาติกาลเวลาแปรเปลี่ยนไปตามกัน ยุคแห่งข้อมูลใหญ่ไหลเวียนวน อัลกอริทึมแทรกซ้อนซับซ้อนงาม องค์ความรู้ปัญญาประดิษฐ์คิดคำนวณ มิได้หยุดหย่อนแห่งความก้าวหน้าคำ", color: "text-red-400" },
     { text: "พี่ทำงานกับคนนี้นะ https://www.facebook.com/momotheoxy",color: "text-yellow-400", image: "https://shorturl.asia/NQJeT"},
     { text: "พี่เป็น PM(Project manager)มั้ง, Full stack Developer(Claude, ChatGPT :) )", color: "text-blue-400", image: "https://shorturl.at/H3BpY" },
     { text: "ออกซิเจน,อะเมริเซียม", color: "text-green-400" },
-    { text: "https://youtu.be/FnvUMFmxP70?si=VNzl1Xl2QdSO0Pl8", color: "text-purple-400" },
+    { text: "https://www.youtube.com/watch?v=41O_MydqxTU&ab_channel=WaterTowerMusic", color: "text-purple-400" },
   ];
   
   const terminalStartup = [
@@ -78,6 +80,7 @@
   function resetGame(): void {
     currentHint = null;
     clickCount = 0;
+    popCatCount = 0;
     terminalLines = [...terminalStartup.map(line => `> ${line}`)];
     isAnimating = false;
     showEndModal = false;
@@ -85,6 +88,26 @@
   
   function closeModal(): void {
     showEndModal = false;
+  }
+  
+  function handleNoClick(): void {
+    showNoModal = true;
+  }
+  
+  function closeNoModal(): void {
+    showNoModal = false;
+  }
+  
+  function handlePopCatClick(): void {
+    popCatCount++;
+    terminalLines = [...terminalLines, `> POP_CAT_${popCatCount} clicked at ${new Date().toLocaleTimeString()} 🐱`];
+    
+    setTimeout(() => {
+      const terminal = document.querySelector('.terminal-output');
+      if (terminal) {
+        terminal.scrollTop = terminal.scrollHeight;
+      }
+    }, 100);
   }
   
   function parseTextWithLinks(text: string): string {
@@ -118,27 +141,54 @@
         <p class="text-green-300/80 text-lg">
           Click for hint... 😏
         </p>
-        <div class="text-sm text-green-400/60">
-          Clicks: <span class="text-yellow-400 font-bold">{clickCount}</span>
+        <div class="text-sm text-green-400/60 space-y-1">
+          <div>Hint Clicks: <span class="text-yellow-400 font-bold">{clickCount}</span></div>
+          <div>Pop Cat Clicks: <span class="text-orange-400 font-bold">{popCatCount}</span></div>
         </div>
       </div>
       
-      {#if clickCount < hints.length}
+      <div class="flex gap-4 items-center flex-wrap justify-center">
+        {#if clickCount < hints.length}
+          <button
+            on:click={handleClick}
+            class="group relative px-8 py-4 bg-gradient-to-r from-red-600 to-red-800 
+                   hover:from-red-500 hover:to-red-700 text-white font-bold text-xl
+                   border-2 border-red-400 rounded-lg shadow-lg hover:shadow-red-500/50
+                   transform transition-all duration-300 hover:scale-105
+                   {isAnimating ? 'animate-pulse scale-110' : ''}"
+            disabled={isAnimating}
+          >
+            <span class="relative z-10">
+              {isAnimating ? 'PROCESSING...' : 'CLICK ME! 🚫'}
+            </span>
+            <div class="absolute inset-0 bg-red-500/20 rounded-lg blur-lg group-hover:blur-xl transition-all"></div>
+          </button>
+        {/if}
+        
         <button
-          on:click={handleClick}
-          class="group relative px-8 py-4 bg-gradient-to-r from-red-600 to-red-800 
-                 hover:from-red-500 hover:to-red-700 text-white font-bold text-xl
-                 border-2 border-red-400 rounded-lg shadow-lg hover:shadow-red-500/50
-                 transform transition-all duration-300 hover:scale-105
-                 {isAnimating ? 'animate-pulse scale-110' : ''}"
-          disabled={isAnimating}
+          on:click={handlePopCatClick}
+          class="group relative px-6 py-4 bg-gradient-to-r from-orange-600 to-orange-800 
+                 hover:from-orange-500 hover:to-orange-700 text-white font-bold text-xl
+                 border-2 border-orange-400 rounded-lg shadow-lg hover:shadow-orange-500/50
+                 transform transition-all duration-300 hover:scale-105"
         >
-          <span class="relative z-10">
-            {isAnimating ? 'PROCESSING...' : 'CLICK ME! 🚫'}
-          </span>
-          <div class="absolute inset-0 bg-red-500/20 rounded-lg blur-lg group-hover:blur-xl transition-all"></div>
+          <span class="relative z-10">Pop Cat 🐱 ({popCatCount})</span>
+          <div class="absolute inset-0 bg-orange-500/20 rounded-lg blur-lg group-hover:blur-xl transition-all"></div>
         </button>
-      {/if}
+        
+        {#if clickCount < hints.length}
+          <button
+            on:click={handleNoClick}
+            class="group relative px-6 py-4 bg-gradient-to-r from-gray-600 to-gray-800 
+                   hover:from-gray-500 hover:to-gray-700 text-white font-bold text-xl
+                   border-2 border-gray-400 rounded-lg shadow-lg hover:shadow-gray-500/50
+                   transform transition-all duration-300 hover:scale-105"
+          >
+            <span class="relative z-10">No! 😤</span>
+            <div class="absolute inset-0 bg-gray-500/20 rounded-lg blur-lg group-hover:blur-xl transition-all"></div>
+          </button>
+        {/if}
+      </div>
       
       {#if currentHint}
         <div class="bg-gray-900/80 border border-green-400/50 rounded-lg p-6 max-w-md mx-auto
@@ -221,6 +271,26 @@
       </div>
     </div>
   </div>
+  
+  <!-- No Modal -->
+  {#if showNoModal}
+    <div class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+      <div class="bg-gray-900 border-2 border-gray-400 rounded-lg p-8 max-w-md mx-auto text-center
+                  shadow-2xl shadow-gray-500/50 animate-fade-in">
+        <div class="text-6xl mb-4">
+          <img src="https://shorturl.asia/Kc89B" alt="No reaction" class="mx-auto max-w-full h-auto rounded-lg" />
+        </div>
+        <button
+          on:click={closeNoModal}
+          class="px-6 py-3 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-lg
+                 border-2 border-blue-400 transition-all duration-300
+                 hover:shadow-blue-400/50 hover:shadow-lg transform hover:scale-105"
+        >
+          OK
+        </button>
+      </div>
+    </div>
+  {/if}
   
   <!-- End Modal -->
   {#if showEndModal}
