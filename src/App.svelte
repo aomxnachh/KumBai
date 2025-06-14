@@ -149,7 +149,7 @@
     } else if (popCatCount === 500000) {
       popCatModalContent = {
         title: "โอเคถ้าน้องกดขนาดนี้",
-        message: "ฮันแน่ inspect ดูอ่ะป่าว"
+        message: "พี่จะบอกว่า พี่ชื่อ ออม นะครับ"
       };
       setTimeout(() => {
         showPopCatModal = true;
