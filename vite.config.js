@@ -6,7 +6,6 @@ import obfuscatorPlugin from 'vite-plugin-javascript-obfuscator'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [svelte(), tailwindcss(), obfuscatorPlugin({
-    // Obfuscator options
     obfuscatorOptions: {
       compact: true,
       controlFlowFlattening: true,

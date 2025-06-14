@@ -94,7 +94,7 @@
     if (popCatCount === 400) {
       popCatModalContent = {
         title: "นามปากกา",
-        message: "พี่ชื่อ เกาเหลา"
+        message: "พี่ขึ้นต้นด้วย เ และลงท้ายด้วย า"
       };
       setTimeout(() => {
         showPopCatModal = true;
@@ -146,10 +146,11 @@
       }, 0);
 
     
-    } else if (popCatCount === 500000) {
+    } else if (popCatCount === 5000000000000000) {
       popCatModalContent = {
         title: "โอเคถ้าน้องกดขนาดนี้",
-        message: "พี่จะบอกว่า พี่ชื่อ ออม นะครับ"
+        message: "หรือแอบ inspect มาดูน้า พี่ขก.ทำ encode คับ"
+
       };
       setTimeout(() => {
         showPopCatModal = true;
